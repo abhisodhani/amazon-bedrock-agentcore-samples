@@ -11,3 +11,5 @@ bedrock-agentcore
 bedrock-agentcore-starter-toolkit
 botocore
 boto3
+playwright
+nest-asyncio

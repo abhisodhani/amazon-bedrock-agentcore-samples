@@ -306,3 +306,29 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 ## 🔄 Updates
 
 This repository is actively maintained and updated with new capabilities and examples. Watch the repository to stay updated with the latest additions.
+
+
+agentcore configure --entrypoint main.py -er arn:aws:iam::461312420708:role/CustomerSupportStackInfra-RuntimeAgentCoreRole-iPTYgs62oR7Y   --name customersupportAgent
+
+ https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration  
+ 27lttjsicgmtokmc6j9mugb4sc
+
+ streamlit run app.py --server.port 8501 -- --agent=customersupportliveagent
+
+ python scripts/agentcore_agent_runtime.py <agent-name>
+
+https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration
+4rfkog4loem2j7vcqkqgatv6oh
+
+python test/test_agent.py customersupportliveagent -p "Hi"
+
+python test/test_agent.py customersupportliveagent -p "Hi"
+
+streamlit cache clear
+streamlit run app.py --server.port 8501 -- --agent=customersupportliveagent
+
+
+https://bedrock-agentcore.us-west-2.amazonaws.com/identities/oauth2/callback
+
+https://bedrock-agentcore.us-west-2.amazonaws.com/identities/oauth2/callback
+

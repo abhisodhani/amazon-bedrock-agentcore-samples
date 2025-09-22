@@ -75,6 +75,11 @@ class AuthManager:
             if not state:
                 st.stop()
 
+            print(f"DEBUG - OAuth state check:")
+            print(f"DEBUG - returned_state: {returned_state}")
+            print(f"DEBUG - expected_state: {state}")
+            print(f"DEBUG - states match: {returned_state == state}")
+            
             if returned_state != state:
                 st.error("State mismatch - potential CSRF detected")
                 st.stop()

@@ -56,7 +56,7 @@ def invoke_endpoint(
             params={"qualifier": endpoint_name},
             headers=headers,
             json=body,
-            timeout=100,
+            timeout=300,
             stream=True,
         )
         logger = logging.getLogger("bedrock_agentcore.stream")

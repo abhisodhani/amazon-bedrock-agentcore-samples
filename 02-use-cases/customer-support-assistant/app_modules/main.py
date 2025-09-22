@@ -15,7 +15,12 @@ def main():
                 agent_name = arg.split("=")[1]
 
     # Configure page
-    st.set_page_config(layout="wide")
+    st.set_page_config(
+        page_title="Customer Support Assistant",
+        page_icon="🤖",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
 
     # Apply custom styles
     apply_custom_styles()
@@ -40,24 +45,49 @@ def render_authenticated_interface(
     auth_manager: AuthManager, chat_manager: ChatManager
 ):
     """Render the interface for authenticated users"""
-    # Sidebar
-    st.sidebar.title("Access Tokens")
+    # Modern sidebar
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-section">
+            <div class="sidebar-title">🔑 Access Tokens</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.sidebar.code(auth_manager.cookies.get("tokens"))
 
-    if st.sidebar.button("Logout"):
+    # Logout button with better styling
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
+    if st.sidebar.button("🚪 Logout", key="logout_btn", help="Sign out of the application"):
         auth_manager.logout()
 
-    st.sidebar.write("Agent Arn")
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-section">
+            <div class="sidebar-title">🤖 Agent Details</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.sidebar.code(st.session_state["agent_arn"])
 
-    st.sidebar.write("Session Id")
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-section">
+            <div class="sidebar-title">🎯 Session ID</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.sidebar.code(st.session_state["session_id"])
 
-    # Main content
-    st.title("Customer Support Assistant")
+    # Modern header
     st.markdown(
         """
-        <hr style='border:1px solid #298dff;'>
+        <div class="main-header">
+            <h1 class="main-title">🤖 Customer Support Assistant</h1>
+            <p class="main-subtitle">Powered by Amazon Bedrock AgentCore • Get instant help with warranties, troubleshooting & more</p>
+        </div>
         """,
         unsafe_allow_html=True,
     )
@@ -65,6 +95,13 @@ def render_authenticated_interface(
     # Get user info and tokens
     tokens = auth_manager.get_tokens()
     user_claims = auth_manager.get_user_claims()
+    
+    # Debug logging
+    print(f"DEBUG - Tokens: {tokens}")
+    print(f"DEBUG - User claims: {user_claims}")
+    print(f"DEBUG - Agent ARN: {st.session_state.get('agent_arn')}")
+    print(f"DEBUG - Session ID: {st.session_state.get('session_id')}")
+    print(f"DEBUG - Client ID from auth: {auth_manager.client_id}")
 
     # Initialize conversation if needed
     if not st.session_state.get("messages"):
@@ -75,8 +112,15 @@ def render_authenticated_interface(
         # Display chat history
         chat_manager.display_chat_history()
 
-    # Chat input
-    if prompt := st.chat_input("Ask customer support assistant questions!"):
+    # Modern chat input
+    st.markdown(
+        """
+        <div style="margin-top: 2rem;">
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if prompt := st.chat_input("✨ Ask me about warranties, troubleshooting, or schedule a meeting..."):
         chat_manager.process_user_message(prompt, user_claims, tokens["access_token"])
 
 

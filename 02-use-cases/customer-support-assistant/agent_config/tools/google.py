@@ -31,9 +31,9 @@ def get_google_access_token(access_token: str):
 
 @tool(
     name="Create_calendar_event",
-    description="Creates a new event on your Google Calendar",
+    description="Creates a new event on your Google Calendar. Accepts event_title, start_time (YYYY-MM-DD HH:MM format), and duration_hours as parameters.",
 )
-def create_calendar_event() -> str:
+def create_calendar_event(event_title: str = "Customer Support Call", start_time: str = "", duration_hours: int = 1) -> str:
     google_access_token = (
         CustomerSupportContext.get_google_token_ctx()
     )  # Get from context instead of global
@@ -55,21 +55,33 @@ def create_calendar_event() -> str:
     try:
         service = build("calendar", "v3", credentials=creds)
 
-        # Define event details
-        start_time = datetime.now() + timedelta(hours=1)
-        end_time = start_time + timedelta(hours=1)
+        # Parse the requested time or default to 1 hour from now
+        if start_time:
+            try:
+                # Parse time like "2024-01-15 09:00" or "09:00" (today)
+                if len(start_time.split()) == 1:  # Just time like "09:00"
+                    today = datetime.now().strftime("%Y-%m-%d")
+                    start_time = f"{today} {start_time}"
+                parsed_start = datetime.strptime(start_time, "%Y-%m-%d %H:%M")
+            except ValueError:
+                # Fallback to 1 hour from now if parsing fails
+                parsed_start = datetime.now() + timedelta(hours=1)
+        else:
+            parsed_start = datetime.now() + timedelta(hours=1)
+        
+        end_time = parsed_start + timedelta(hours=duration_hours)
 
         event = {
-            "summary": "Customer Support Call",
+            "summary": event_title,
             "location": "Virtual",
             "description": "This event was created by Customer Support Assistant.",
             "start": {
-                "dateTime": start_time.isoformat() + "Z",  # UTC time
-                "timeZone": "UTC",
+                "dateTime": parsed_start.isoformat(),
+                "timeZone": "America/Los_Angeles",  # PT timezone
             },
             "end": {
-                "dateTime": end_time.isoformat() + "Z",
-                "timeZone": "UTC",
+                "dateTime": end_time.isoformat(),
+                "timeZone": "America/Los_Angeles",
             },
         }
 

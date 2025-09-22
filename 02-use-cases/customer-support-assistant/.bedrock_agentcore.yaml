@@ -1,0 +1,130 @@
+default_agent: customersupportliveagent
+agents:
+  customersupportAgent:
+    name: customersupportAgent
+    entrypoint: main.py
+    platform: linux/arm64
+    container_runtime: docker
+    aws:
+      execution_role: arn:aws:iam::461312420708:role/CustomerSupportStackInfra-RuntimeAgentCoreRole-iPTYgs62oR7Y
+      execution_role_auto_create: true
+      account: '461312420708'
+      region: us-west-2
+      ecr_repository: null
+      ecr_auto_create: true
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: null
+      agent_arn: null
+      agent_session_id: null
+    codebuild:
+      project_name: null
+      execution_role: null
+      source_bucket: null
+    authorizer_configuration:
+      customJWTAuthorizer:
+        discoveryUrl: https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration
+        allowedClients:
+        - 4rfkog4loem2j7vcqkqgatv6oh
+    oauth_configuration: null
+  customersupportagent:
+    name: customersupportagent
+    entrypoint: main.py
+    platform: linux/arm64
+    container_runtime: docker
+    aws:
+      execution_role: arn:aws:iam::461312420708:role/CustomerSupportStackInfra-RuntimeAgentCoreRole-iPTYgs62oR7Y
+      execution_role_auto_create: true
+      account: '461312420708'
+      region: us-west-2
+      ecr_repository: 461312420708.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-customersupportagent
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: customersupportagent-XYgGYV4s81
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:461312420708:runtime/customersupportagent-XYgGYV4s81
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-customersupportagent-builder
+      execution_role: arn:aws:iam::461312420708:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-2c15d07c6e
+      source_bucket: bedrock-agentcore-codebuild-sources-461312420708-us-west-2
+    authorizer_configuration:
+      customJWTAuthorizer:
+        discoveryUrl: https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration
+        allowedClients:
+        - 27lttjsicgmtokmc6j9mugb4sc
+    oauth_configuration: null
+  customersupportliveagent:
+    name: customersupportliveagent
+    entrypoint: main.py
+    platform: linux/arm64
+    container_runtime: docker
+    aws:
+      execution_role: arn:aws:iam::461312420708:role/CustomerSupportStackInfra-RuntimeAgentCoreRole-iPTYgs62oR7Y
+      execution_role_auto_create: true
+      account: '461312420708'
+      region: us-west-2
+      ecr_repository: 461312420708.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-customersupportliveagent
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: customersupportliveagent-ymua758z9d
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:461312420708:runtime/customersupportliveagent-ymua758z9d
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-customersupportliveagent-builder
+      execution_role: arn:aws:iam::461312420708:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-22783bb31b
+      source_bucket: bedrock-agentcore-codebuild-sources-461312420708-us-west-2
+    authorizer_configuration:
+      customJWTAuthorizer:
+        discoveryUrl: https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration
+        allowedClients:
+        - 4rfkog4loem2j7vcqkqgatv6oh
+    oauth_configuration: null
+  playwright_mcp_agentcore:
+    name: playwright_mcp_agentcore
+    entrypoint: /Users/sodhani/Documents/repo/amazon-bedrock-agentcore-samples/02-use-cases/customer-support-assistant/playwright_mcp_server.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::461312420708:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-4b78c67dd9
+      execution_role_auto_create: false
+      account: '461312420708'
+      region: us-west-2
+      ecr_repository: 461312420708.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-playwright_mcp_agentcore
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: MCP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: playwright_mcp_agentcore-5QSApy2F7K
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:461312420708:runtime/playwright_mcp_agentcore-5QSApy2F7K
+      agent_session_id: b8492552-406e-4d00-94ad-5274dad7254c
+    codebuild:
+      project_name: bedrock-agentcore-playwright_mcp_agentcore-builder
+      execution_role: arn:aws:iam::461312420708:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-4b78c67dd9
+      source_bucket: bedrock-agentcore-codebuild-sources-461312420708-us-west-2
+    authorizer_configuration:
+      customJWTAuthorizer:
+        allowedClients:
+        - 4rfkog4loem2j7vcqkqgatv6oh
+        discoveryUrl: https://cognito-idp.us-west-2.amazonaws.com/us-west-2_WFlLyrdSC/.well-known/openid-configuration
+    oauth_configuration: null

@@ -22,9 +22,12 @@ class ChatManager:
 
         if "agent_arn" not in st.session_state:
             runtime_config = read_config(".bedrock_agentcore.yaml")
+            print(f"Available agents: {list(runtime_config['agents'].keys())}")
+            print(f"Looking for agent: {self.agent_name}")
             st.session_state["agent_arn"] = runtime_config["agents"][self.agent_name][
                 "bedrock_agentcore"
             ]["agent_arn"]
+            print(f"Agent ARN: {st.session_state['agent_arn']}")
 
         if "region" not in st.session_state:
             st.session_state["region"] = get_aws_region()
@@ -58,6 +61,11 @@ class ChatManager:
         except json.JSONDecodeError:
             body = {"payload": payload}
 
+        print(f"DEBUG - Making request to: {url}")
+        print(f"DEBUG - With headers: {headers}")
+        print(f"DEBUG - With body: {body}")
+        print(f"DEBUG - Bearer token (first 50 chars): {bearer_token[:50] if bearer_token else 'None'}...")
+        
         try:
             response = requests.post(
                 url,
@@ -67,6 +75,8 @@ class ChatManager:
                 timeout=100,
                 stream=True,
             )
+            print(f"Response status: {response.status_code}")
+            print(f"Response headers: {dict(response.headers)}")
             last_data = False
             for line in response.iter_lines(chunk_size=1):
                 if line:
@@ -83,7 +93,12 @@ class ChatManager:
                         last_data = False
 
         except requests.exceptions.RequestException as e:
-            print("Failed to invoke agent endpoint: %s", str(e))
+            error_msg = f"Failed to invoke agent endpoint: {str(e)}"
+            print(error_msg)
+            print(f"URL: {url}")
+            print(f"Headers: {headers}")
+            print(f"Body: {body}")
+            st.error(error_msg)
             raise
 
     def display_chat_history(self):
@@ -125,6 +140,8 @@ class ChatManager:
 
     def process_user_message(self, prompt: str, user_claims: dict, bearer_token: str):
         """Process a user message and get assistant response"""
+        print(f"DEBUG - process_user_message called with prompt: {prompt}")
+        print(f"DEBUG - bearer_token in process_user_message: {bearer_token[:50] if bearer_token else 'None'}...")
         st.session_state.messages.append({"role": "user", "content": prompt})
 
         with st.chat_message("user"):
@@ -195,6 +212,10 @@ class ChatManager:
 
     def initialize_default_conversation(self, user_claims: dict, bearer_token: str):
         """Initialize the conversation with a default message"""
+        print(f"DEBUG - initialize_default_conversation called")
+        print(f"DEBUG - user_claims: {user_claims}")
+        print(f"DEBUG - bearer_token type: {type(bearer_token)}")
+        print(f"DEBUG - bearer_token length: {len(bearer_token) if bearer_token else 0}")
         if not st.session_state.messages:
             default_prompt = f"Hi my email is {user_claims.get('email')}"
             st.session_state.messages = [{"role": "user", "content": default_prompt}]
