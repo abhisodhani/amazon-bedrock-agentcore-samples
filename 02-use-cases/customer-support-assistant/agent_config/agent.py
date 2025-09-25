@@ -86,7 +86,7 @@ class CustomerSupport:
             model=self.model,
             system_prompt=self.system_prompt,
             tools=self.tools,
-            # hooks=[self.memory_hook],
+            hooks=[self.memory_hook],
         )
 
     def invoke(self, user_query: str):

@@ -25,6 +25,7 @@ def main():
     # Apply custom styles
     apply_custom_styles()
 
+
     # Initialize managers
     auth_manager = AuthManager()
     chat_manager = ChatManager(agent_name)
@@ -81,12 +82,12 @@ def render_authenticated_interface(
     )
     st.sidebar.code(st.session_state["session_id"])
 
-    # Modern header
+    # Compact header for chat widget
     st.markdown(
         """
         <div class="main-header">
-            <h1 class="main-title">🤖 Customer Support Assistant</h1>
-            <p class="main-subtitle">Powered by Amazon Bedrock AgentCore • Get instant help with warranties, troubleshooting & more</p>
+            <h1 class="main-title">🤖 Customer Support</h1>
+            <p class="main-subtitle">How can I help you today?</p>
         </div>
         """,
         unsafe_allow_html=True,
